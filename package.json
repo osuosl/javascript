@@ -1,0 +1,29 @@
+{
+  "name": "osuosl-style-js",
+  "version": "0.0.1",
+  "description": "A sane, reusable Javascript style guide.",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osuosl/style-js.git"
+  },
+  "keywords": [
+    "style",
+    "guide",
+    "lint",
+    "osuosl",
+    "es6",
+    "es2015",
+    "ecmascript",
+    "6",
+    "ecmascript",
+    "2015"
+  ],
+  "author": "OSU Open Source Lab <support@osuosl.org>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/osuosl/style-js/issues"
+  },
+  "homepage": "https://github.com/osuosl/style-js#readme"
+}
