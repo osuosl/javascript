@@ -6,7 +6,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/osuosl/style-js.git"
+    "url": "git+https://github.com/osuosl/javascript.git"
   },
   "keywords": [
     "style",
@@ -23,7 +23,7 @@
   "author": "OSU Open Source Lab <support@osuosl.org>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/osuosl/style-js/issues"
+    "url": "https://github.com/osuosl/javascript/issues"
   },
-  "homepage": "https://github.com/osuosl/style-js#readme"
+  "homepage": "https://github.com/osuosl/javascript#readme"
 }
