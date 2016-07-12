@@ -34,7 +34,7 @@ module.exports = {
     'dot-notation': 'error',
 
     // Require triple-equals over the confusing and weird double-equals
-    'eqeqeq': ['error', 'allow-null'],
+    eqeqeq: ['error', 'allow-null'],
 
     // Iterating over JSON objects means ifs are usually unnecessary in for-in
     'guard-for-in': 'off',
@@ -201,7 +201,7 @@ module.exports = {
     'no-with': 'error',
 
     // Require a radix in parseInt()
-    'radix': 'error',
+    radix: 'error',
 
     // Require `var` to be at the top of its scope to prevent hoisting
     'vars-on-top': 'error',
@@ -210,6 +210,6 @@ module.exports = {
     'wrap-iife': ['error', 'inside'],
 
     // Disallow "yoda" conditions (e.g. `if (3 === x)`)
-    'yoda': ['error', 'never'],
+    yoda: ['error', 'never'],
   },
 };

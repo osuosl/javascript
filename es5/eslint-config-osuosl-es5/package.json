@@ -4,7 +4,7 @@
   "description": "OSU Open Source Lab's ESLint config for ES5, following our styleguide",
   "main": ".eslintrc.js",
   "scripts": {
-    "lint": "jshint --config ../.jshintrc . && eslint ."
+    "lint": "jshint --config ../.jshintrc rules/* && eslint rules/*"
   },
   "repository": {
     "type": "git",
