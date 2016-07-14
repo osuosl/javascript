@@ -64,10 +64,69 @@ on and passed around by their reference. These are types like:
     b.foo = 'baz'; // We now are altering both variables
 
     console.log(a); // => {"foo": "baz"}
+    ```
 
 **[⬆ back to top](#table-of-contents)**
 
 ## Declaration
+
+-  **Always use `var`**. Declaring a variable without `var` pollutes the global
+namespace, potentially shadowing global variables we might want. Also, when
+writing code that will be run in the browser, it' not always clear whether
+global variables will be put in the top-level, in `window`, or in `document`,
+which just leads to even more confusion.
+
+    ```javascript
+    // bad
+    a = 3;
+
+    // good
+    var a = 3;
+    ```
+
+-  **One variable per `var`**. This makes it easier to add and remove variable
+declarations, and prevents having worry about swapping your punctuation around
+or have punctuation-only diffs.
+
+    ```javascript
+    // bad
+    var orders = getOrders(),
+        customer = getUsername(),
+        tax = 0.05;
+
+    // Potential consequence of the above
+    // (see if you can spot the difference)
+    var orders = getOrders(),
+        customer = getUsername();
+        tax = 0.05;
+
+    // good
+    var orders = getOrders();
+    var customer = getUsername();
+    var tax = 0.05;
+    ```
+
+- **Unassigned variables last**. You never know when you'll change one of your
+unassigned variables to instead hold a value based on an earlier variable.
+
+    ```javascript
+    // bad
+    var i;
+    var orders = getOrders();
+    var customer = getUsername();
+    var tax = 0.05;
+    var len;
+
+    // worse; see above
+    var i, len, orders = getOrders(), customer = getUsername(), tax = 0.05;
+
+    // good
+    var orders = getOrders();
+    var customer = getUsername();
+    var tax = 0.05;
+    var i;
+    var len;
+    ```
 
 **[⬆ back to top](#table-of-contents)**
 
