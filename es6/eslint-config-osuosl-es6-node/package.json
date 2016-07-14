@@ -19,7 +19,7 @@
     "javascript",
     "styleguide"
   ],
-  "author": "OSU Open Source Lab <support@osuosl.org>",
+  "author": "OSU Open Source Lab <npm@osuosl.org>",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/osuosl/javascript/issues"
