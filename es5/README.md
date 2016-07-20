@@ -333,6 +333,89 @@ directly on an object, as the object may have shadowed the method (e.g.
 
 ## Arrays
 
+- **Use literal syntax.** The Array() constructor works differently than may be
+intuitive at times. For example:
+
+    ```javascript
+    var x = new Array(x1, x2, x3);
+    // Creates 3 element array with these values
+
+    x = new Array(x1, x2);
+    // Creates 2 element array with these values
+
+    x = new Array(x1);
+    // If x1 is an integer, creates an x1-element array containing `undefined`
+    // If x1 is negative or a float, it throws an error
+    // If x1 is an object, it creates a 1-element array with that value
+    ```
+
+    Thus, by using the constructor, it would be possible to remove an element
+    and completely change the behavior of the line. The literal syntax, however,
+    is unambiguous.
+
+    ```javascript
+    // bad
+    var x = new Array(x1, x2, x3);
+
+    // good
+    var y = [x1, x2, x3];
+    ```
+
+- **Use .push() to add elements.** This makes it clear that you are adding an
+element, not overwriting, and guarantees the element always goes in the correct
+place.
+
+    ```javascript
+    var a = [1, 2, 3, 4];
+
+    // bad
+    a[a.length] = 5;
+
+    // worse (magic number)
+    a[4] = 5;
+
+    // good
+    a.push(5);
+    ```
+
+- **Use .slice() to copy an array.** Element-wise copying is slower, more
+verbose, and may be harder to read. However, `slice()` always performs a
+shallow copy; if you need a deep copy, you will need to write that yourself.
+
+    ```javascript
+    var items = ['foo', 'bar', 1, 2, 3, {prop: 'val'}];
+    var itemsCopy = [];
+
+    // bad
+    for (i = 0; i < items.length; i++) {
+      itemsCopy[i] = items[i];
+    }
+
+    // good
+    itemsCopy = items.slice();
+    ```
+
+- **Array is not an associative array.** AKA a hash, map, or dictionary. Some
+people have discovered that you can use an Array as an associative array,
+placing values on arbitrary keys. This is because Array extends from Object,
+the type that's actually designed for you to be able to do this. Arrays are
+only supposed to use numeric keys, and using non-numeric keys breaks...basically
+every Array function.
+
+    ```javascript
+    var a = [];
+
+    // bad
+    a['foo'] = 'bar';
+    a['b'] = 'c';
+
+    // Here's the problem with that.
+    console.log(a.length); // => 0
+
+    // good
+    var x = {foo: 'bar', b: 'c'};
+    ```
+
 **[⬆ back to top](#table-of-contents)**
 
 ## Functions
