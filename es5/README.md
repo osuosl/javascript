@@ -201,8 +201,8 @@ no real benefit to escaping random characters in a string anyway.
 
 ## Objects
 
-- **Use literal objects over constructor.** For simple custom objects, use the
-literal object syntax, instead of extending a constructed object.
+- **Use literal objects instead of constructors.** For simple custom objects,
+use the literal object syntax, instead of extending a constructed object.
 
     ```javascript
     // bad
@@ -239,7 +239,7 @@ this rule with caution.
     };
     ```
 
-- **Use synonyms over misspellings.** When avoiding reserved keywords as
+- **Use synonyms instead of misspellings.** When avoiding reserved keywords as
 property names, use a word which is synonymous with the word you are avoiding
 over intentionally misspelling the word.
 
