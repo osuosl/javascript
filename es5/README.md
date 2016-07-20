@@ -128,13 +128,206 @@ unassigned variables to instead hold a value based on an earlier variable.
     var len;
     ```
 
+- **Use ALL_CAPS for constants.** ECMAScript 5 doesn't have any concept of
+constants, and will allow a developer to modify any variable. To counter this,
+make it explicit that your variable is intended to be constant by naming it
+with ALL_CAPS, which implicitly alerts other developers not to modify it.
+
+    ```javascript
+    // bad
+    var constVar = 3;
+
+    // good
+    var CONST_VAR = 3;
+    ```
+
 **[⬆ back to top](#table-of-contents)**
 
 ## Strings
 
+- **Use single quotes.** This is a matter of preference, but it is something
+that should always be standardized. We only use single quotes, unless the
+string has embedded single quotes, in which case double quotes are acceptable.
+
+    ```javascript
+    // bad
+    var x = "a string";
+
+    // okay but less preferable
+    var y = 'isn\'t this great';
+
+    // good
+    var a = 'a string';
+    var b = "isn't this great";
+    ```
+
+- **Concatenate over line breaks.** If a string is long enough to cause a line
+to go over the 80 character limit, split it and concatenate. If you're splitting
+between words, put the space at the end of the first line, not the start of the
+next.
+
+    ```javascript
+    // bad
+    var x = 'This is an example of a string that is way too long and just needs to be cut short before it goes off the edge of screens';
+
+    // bad
+    var y = 'This is an example of a string that is extremely long but uses \
+    escapes to split it over multiple lines. This can cause confusing problems \
+    with whitespace and leads to difficult indentation. (Imagine if you \
+    declared this string within 3 or 4 nested blocks; the first line is \
+    indented a few times to match the surrounding lines, but the rest of the \
+    string is stuck pinned to the first column. Weird, right?)';
+
+    // good
+    var a = 'This string is properly built, using multiple literal strings ' +
+            'which are concatenated together manually. This requires a few ' +
+            'more characters per line than escaped linebreaks, but it allows ' +
+            'you to use reasonable indentation.';
+    ```
+
+- **Only escape when necessary.** Backslashes harm readability, and there's
+no real benefit to escaping random characters in a string anyway.
+
+    ```javascript
+    // bad
+    var x = '\'this\' \strin\g h\a\s \"escapes\"\.';
+
+    //good
+    var a = '\'this\' string has "escapes".';
+    var b = "'this' string has \"escapes\".";
+    ```
+
 **[⬆ back to top](#table-of-contents)**
 
 ## Objects
+
+- **Use literal objects over constructor.** For simple custom objects, use the
+literal object syntax, instead of extending a constructed object.
+
+    ```javascript
+    // bad
+    var x = new Object();
+    x.a = 'foo';
+    x.b = 'bar';
+    x.c = 4;
+
+    // good
+    var y = {a: 'foo', b: 'bar', c: 4};
+    ```
+
+- **Avoid reserved keywords as keys.** In ECMAScript 3, the specification stated
+that properties had to be identifiers which are not already reserved words.
+Some interpreters, such as IE 7 and IE 8 (which still maintain strong market
+share as of this writing), still follow this specification, meaning code which
+uses reserved keywords will not be IE 7/8 compatible. If you're writing code
+which will *never* run on these platforms, such as for Node.js, you may ignore
+this rule with caution.
+
+    ```javascript
+    // bad
+    var x = {
+      default: 'foo',
+      private: true,
+      class: 'custom',
+    };
+
+    // good
+    var y = {
+      defaultTo: 'foo',
+      hidden: true,
+      type: 'custom',
+    };
+    ```
+
+- **Use synonyms over misspellings.** When avoiding reserved keywords as
+property names, use a word which is synonymous with the word you are avoiding
+over intentionally misspelling the word.
+
+    ```javascript
+    // bad, see above
+    var x = {
+      class: 'dog',
+    };
+
+    // bad (looking at you, Java developers)
+    var y = {
+      clazz: 'dog',
+    };
+
+    // bad
+    var z = {
+      klass: 'dog',
+    };
+
+    // good
+    var a = {
+      type: 'dog',
+    };
+    ```
+
+- **Only quote properties where necessary.** Properties are allowed to have
+names which are not valid identifiers, for example names which contain hyphens,
+underscores, or other symbols, but these must always be quoted, and require
+bracket notation to access. When using properties which are valid identifiers,
+avoid quotes for readability.
+
+    ```javascript
+    // bad
+    var x = {
+      'foo': 'bar',
+    };
+
+    // invalid, will cause errors
+    var y = {
+      foo-bar: 'baz',
+    };
+
+    // good
+    var a = {
+      foo: 'bar',
+      'foo-bar': 'baz',
+    };
+    ```
+
+- **Prefer dot notation where available.** As stated above, properties which
+contain hyphens, underscores, or other symbols are not valid identifiers and
+require bracket notation to access. When not using these properties, however,
+prefer dot notation.
+
+    ```javascript
+    var x = {
+      foo: 'bar',
+      'foo-bar': 'baz',
+    };
+
+    // bad
+    x['foo'] = 'foobar';
+
+    // invalid, will cause errors
+    x.foo-bar = 'foobar';
+
+    // good
+    x.foo = 'baz';
+    x['foo-bar'] = 'foobar';
+    ```
+
+- **Use indirect references to Object properties.** Don't call Object.prototype
+methods, such as `hasOwnProperty`, `propertyIsEnumerable`, or `isPrototypeOf`
+directly on an object, as the object may have shadowed the method (e.g.
+`{'hasOwnProperty': false}`) or the object may be null.
+
+    ```javascript
+    // bad
+    console.log(object.hasOwnProperty(prop));
+
+    // better
+    console.log(Object.prototype.hasOwnProperty.call(object, prop));
+    console.log({}.hasOwnProperty.call(object, prop));
+
+    // best
+    var hasProperty = Object.prototype.hasOwnProperty;
+    console.log(hasProperty.call(object, prop));
+    ```
 
 **[⬆ back to top](#table-of-contents)**
 
