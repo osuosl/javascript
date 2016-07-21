@@ -37,11 +37,11 @@ module.exports = {
     // Require a blank line at the end of a file
     'eol-last': ['error', 'unix'],
 
-    // Allow function expressions to be named but don't require it
-    'func-names': 'off',
+    // Prefer named functions
+    'func-names': ['warn', 'always'],
 
-    // Allow both function declarations and expressions
-    'func-style': 'off',
+    // Prefer function expressions over declarations
+    'func-style': ['warn', 'expression'],
 
     // Don't prevent certain identifiers
     'id-blacklist': 'off',
