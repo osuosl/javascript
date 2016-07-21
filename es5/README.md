@@ -1,4 +1,4 @@
-# OSU Open Source Lab JavaScript Style Guide, ECMAScript 5
+# OSU Open Source Lab JavaScript Style Guide for ECMAScript 5
 
 *A sane, reusable Javascript style guide.*
 
@@ -11,23 +11,22 @@
 5.  [Arrays](#arrays)
 6.  [Functions](#functions)
 7.  [Closures](#closures)
-8.  [Properties](#properties)
-9.  [Hoisting](#hoisting)
-10. [Operators](#operators)
-11. [Blocks](#blocks)
-12. [Comments](#comments)
-13. [Whitespace and Indentation](#whitespace-and-indentation)
-14. [Commas](#commas)
-15. [Semicolons](#semicolons)
-16. [Type Coercion](#type-coercion)
-17. [Identifiers](#identifiers)
-18. [Accessors](#accessors)
-19. [Constructors](#constructors)
-20. [Events](#events)
-21. [Modules](#modules)
-22. [jQuery](#jquery)
-23. [Testing](#testing)
-24. [License](#license)
+8.  [Hoisting](#hoisting)
+9.  [Operators](#operators)
+10. [Blocks](#blocks)
+11. [Comments](#comments)
+12. [Whitespace and Indentation](#whitespace-and-indentation)
+13. [Commas](#commas)
+14. [Semicolons](#semicolons)
+15. [Type Coercion](#type-coercion)
+16. [Identifiers](#identifiers)
+17. [Accessors](#accessors)
+18. [Constructors](#constructors)
+19. [Events](#events)
+20. [Modules](#modules)
+21. [jQuery](#jquery)
+22. [Testing](#testing)
+23. [License](#license)
 
 ## Types
 
@@ -325,8 +324,8 @@ directly on an object, as the object may have shadowed the method (e.g.
     console.log({}.hasOwnProperty.call(object, prop));
 
     // best
-    var hasProperty = Object.prototype.hasOwnProperty;
-    console.log(hasProperty.call(object, prop));
+    var hasProperty = Object.prototype.hasOwnProperty.call;
+    console.log(hasProperty(object, prop));
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -420,13 +419,121 @@ every Array function.
 
 ## Functions
 
+- **Generally prefer function expressions.** The full scope of this issue is
+difficult to summarize here, but in short, function declarations are hoisted
+to the top of the scope, while function expressions are defined at the logical
+place in the scope. For more information, see
+[this blog post](https://javascriptweblog.wordpress.com/2010/07/06/function-declarations-vs-function-expressions/)
+
+    ```javascript
+    // less ideal
+    function isObject() {
+      return true;
+    }
+
+    // preferable
+    var isObject = function() {
+      return true;
+    }
+    ```
+
+- **Generally prefer named functions.** Function expressions may be either
+anonymous or named. Naming your functions allows for easier use with debuggers,
+as well as stack traces in the case of errors, where they will be able to say
+where an error was thrown or your breakpoint was placed, instead of just
+"anonymous function".
+
+    ```javascript
+    // less ideal
+    var isObject = function() {
+      return true;
+    }
+
+    // preferable
+    var isObject = function isObject() {
+      return true;
+    }
+    ```
+
+- **Never declare functions in blocks.** By blocks are specifically meant
+if/else, while, for, try/catch, and similar blocks (i.e. non-function blocks).
+While the standard does not explicitly disallow this, it is undefined behavior,
+and different interpreters will run the same code differently when you do this.
+If you must define a function inside a block, use a function expression and
+variable.
+
+    ```javascript
+    // bad
+    if (currentUser) {
+      function test() {
+         // May be hoisted to global scope or left here, who knows?
+         // May be undefined if currentUser is falsey, or may always be defined
+        console.log('No.');
+      }
+    }
+
+    // good
+    var test;
+    if (currentUser) {
+      test = function test() {
+        // Guaranteed to be scoped properly
+        console.log('Yes.');
+      }
+    }
+    ```
+
+- **Never name a parameter `arguments`**. Every function is implicitly passed
+an `arguments` object, which has a list of the function's arguments, as well
+as a `callee` and `caller` property (see below on those).
+
+    ```javascript
+    // bad
+    function execute(command, options, arguments) {
+      // ...
+    }
+
+    // good
+    function execute(command, options, args) {
+      // ...
+    }
+    ```
+
 **[⬆ back to top](#table-of-contents)**
 
 ## Closures
 
-**[⬆ back to top](#table-of-contents)**
+- **Make sure you understand closures well.** This is less of a style issue,
+but should be brought up here. Closures are incredibly powerful, and one of the
+most powerful, useful, and wonderful tools of ECMAScript/Javascript, but they
+are also one of the most difficult to use properly, and most dangerous to get
+wrong. [Here is a good description of how closures work.](http://jibbering.com/faq/notes/closures/)
 
-## Properties
+- **Avoid circular references.** One final thing to note. A closure always keeps
+references to its enclosing scope, potentially leading to circular references
+and, thus, a memory leak. Consider the following code:
+
+    ```javascript
+    var addOnClick = function addOnClick(element, a, b) {
+      element.onclick = function onClick() { a.innerHtml = b.innerHtml; };
+    }
+    ```
+
+    It's obvious that here our closure maintains a reference to `a` and `b`,
+    but it also contains a reference to `element` as well. And that contains a
+    reference to the closure via its `onclick` function. Instead, declare the
+    function separately and only assign it as a closure.
+
+    ```javascript
+    var onClick = function onClick(a, b) {
+      return function() {
+        a.innerHtml = b.innerHtml;
+      };
+    };
+
+    var addOnClick = function addOnClick(element, a, b) {
+      element.onclick = onClick(a, b);
+    };
+    ```
 
 **[⬆ back to top](#table-of-contents)**
 
