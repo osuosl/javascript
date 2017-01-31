@@ -498,6 +498,34 @@ as a `callee` and `caller` property (see below on those).
     }
     ```
 
+- **Never use `arguments.callee` or `.caller`.** These are forbidden in ES5
+strict mode and future versions already. They prevent several potential code
+optimizations, and are easily replaced (especially `callee`).
+
+    ```javascript
+    // bad
+    var factorial = function factorial(n) {
+      if (n < 1) {
+        return 0;
+      } else if (n === 1) {
+        return 1;
+      }
+
+      return n * arguments.callee(n-1);
+    };
+
+    // good
+    var factorial = function factorial(n) {
+      if (n < 1) {
+        return 0;
+      } else if (n === 1) {
+        return 1;
+      }
+
+      return n * factorial(n-1);
+    };
+    ```
+
 **[⬆ back to top](#table-of-contents)**
 
 ## Closures
