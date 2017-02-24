@@ -1,0 +1,33 @@
+{
+  "name": "eslint-config-osuosl-es5",
+  "version": "0.1.0",
+  "description": "OSU Open Source Lab's ESLint config for ES5, following our styleguide",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "lint": "jshint --config ../.jshintrc rules/* && eslint rules/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/osuosl/javascript/"
+  },
+  "keywords": [
+    "eslint",
+    "eslintconfig",
+    "eslint-config",
+    "config",
+    "osuosl",
+    "open-source-lab",
+    "javascript",
+    "styleguide"
+  ],
+  "author": "OSU Open Source Lab <npm@osuosl.org>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/osuosl/javascript/issues"
+  },
+  "homepage": "https://github.com/osuosl/javascript/es5/eslint-config-osuosl-es5",
+  "devDependencies": {
+    "eslint": "^3.0.1",
+    "jshint": "^2.9.2"
+  }
+}
